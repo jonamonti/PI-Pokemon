@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
-import { getPokemonById } from '../actions';
+import { getPokemonById, cleanPokemonDetail } from '../actions';
 
 export default function PokemonDetail(){
     // const id = props.match.params.id;
@@ -15,6 +15,10 @@ export default function PokemonDetail(){
     useEffect(() => {
         dispatch(getPokemonById(id))
     }, [dispatch, id])
+
+    const handleClick = () => {
+        dispatch(cleanPokemonDetail());
+    }
 
     return(
         <div>
@@ -36,7 +40,7 @@ export default function PokemonDetail(){
             <div>Weight: {weight}</div>
             <img src={img} alt='img not found' width='200px' height='200px' /><br/>
             <NavLink to={'/home'}>
-                <button>Home</button>
+                <button onClick={() => handleClick()}  >Home</button>
             </NavLink>
         </div>
     )

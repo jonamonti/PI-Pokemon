@@ -1,17 +1,29 @@
 import React from 'react';
-import { /**useState,*/ useEffect} from 'react';
+import { useState, useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { getPokemons, getTypes } from '../actions';
+import Paginated from './Paginated';
+import { getPokemons, getTypes, filterPokemonsByCreated, filterPokemonsByType, orderByName, orderByAttack } from '../actions';
 import PokemonCard from './PokemonCard';
 
 export default function Home(){
 
-    const dispatch = useDispatch();
+    // Global states
     const pokemonList = useSelector(state => state.pokemonList);
-    const typeList = useSelector(state => state.typeList);
-        // esto es equivalente a mapStateToProps(state)
+    const typeList = useSelector(state => state.typeList); // esto es equivalente a mapStateToProps(state)
+    // Local states
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pokemonsPerPage, setPokemonsPerPage] = useState(12);
+    const [orderedBy, setOrderedBy] = useState('');
+
+    //
+    const allPokemons = pokemonList.length;
+    const lastPokemon = currentPage * pokemonsPerPage;
+    const firstPokemon = lastPokemon - pokemonsPerPage;
+    const currentPokemons = pokemonList.slice(firstPokemon, lastPokemon);
     
+    // Functions
+    const dispatch = useDispatch();
     // cuando se monte el componente quiero que me traigan todos los pokemones
     useEffect(() => {
         dispatch(getPokemons())
@@ -24,6 +36,28 @@ export default function Home(){
         dispatch(getPokemons());
     }
 
+    const paginated = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    }
+
+    const handleFilterCreated = (e) => {
+        dispatch(filterPokemonsByCreated(e.target.value));
+    }
+
+    const handleFilterByType = (e) => {
+        dispatch(filterPokemonsByType(e.target.value));    
+    }
+
+    const handleSortByName = (e) => {
+        dispatch(orderByName(e.target.value));
+        setOrderedBy(`Name-${e.target.value}`);
+    }
+
+    const handleSortByAttack = (e) => {
+        dispatch(orderByAttack(e.target.value));
+        setOrderedBy(`Attack-${e.target.value}`);
+    }
+
     return(
         <div>
             <NavLink to='/createPokemon'>Create a Pokemon!</NavLink><br/>
@@ -33,39 +67,51 @@ export default function Home(){
                 Volver a cargar todos los personajes
             </button>
             <div>
-                <label>Orden alfabetico
-                    <select>
+                <label>Order by: name
+                    <select onChange={(e) => handleSortByName(e)} >
+                        <option></option>
                         <option value='asc'>Ascendente</option>
                         <option value='desc'>Descendente</option>
                     </select>
                 </label>
                 <br/>
-                <label>Orden por ataque
-                    <select>
-                        <option value='asc'>Ascendente</option>
-                        <option value='desc'>Descendente</option>
+                <label>Order by: attack
+                    <select onChange={ (e) => handleSortByAttack(e)} >
+                        <option></option>
+                        <option value='asc'>Weaker-stronger</option>
+                        <option value='desc'>Stronger-weaker</option>
                     </select>
                 </label>
                 <br/>
-                <label>Origen
-                    <select>
-                        <option value='all'>Todos</option> 
+                <label>Filter by: Existing or created
+                    <select onChange={(e) => handleFilterCreated(e)} >
+                        <option value='All'>Todos</option> 
                         <option value='pokeApi'>Existente</option>
                         <option value='database'>Creado por nosotros</option>
                     </select>
                 </label>
                 <br/>
-                <label>Tipo de pokemon
-                    <select>
-                        <option value='pokeApi'>Existente</option>
-                        <option value='database'>Creado por nosotros</option>
+                <label>Filter by: type
+                    <select onChange={ (e) => handleFilterByType(e)} >
+                        <option value='All'>all</option>
+                        {
+                            typeList?.map( (t) => {
+                                return(
+                                    <option key={t} value={t}>{t}</option>
+                                 )})
+                        }
                     </select>
                 </label>
-                <br/>
+                <br/><br/><br/>
+                <Paginated 
+                    pokemonsPerPage={pokemonsPerPage}
+                    allPokemons={allPokemons} 
+                    paginated={paginated}>
+                </Paginated>
             </div>
             <div>
             {
-                    pokemonList?.map( (p) => {
+                    currentPokemons?.map( (p) => {
                         return(
                             <div key={p.id}>
                                 <NavLink to={`/home/${p.id}`}>

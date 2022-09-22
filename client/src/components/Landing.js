@@ -29,7 +29,7 @@ export default class Landing extends React.Component {
                         </NavLink>
                     </li>
                 </ul>
-                <img src='https://www.gamebyte.com/wp-content/uploads/2018/08/Pokemon.jpg' alt='img not found'/>
+                <img src='https://www.gamebyte.com/wp-content/uploads/2018/08/Pokemon.jpg' alt='img not found' height='500px'/>
 
         </React.Fragment>
         )

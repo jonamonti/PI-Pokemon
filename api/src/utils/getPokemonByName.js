@@ -15,21 +15,21 @@ module.exports = {
             
             const { id, stats, height, weight, types, sprites } = resp.data;
             const stat = {};
-            resp.data.stats.forEach(e => stat[e.stat.name] = e.base_stat)
+                stats.forEach(e => stat[e.stat.name] = e.base_stat)
     
             const type = [];
-            resp.data.types.forEach(t => type.push(t.type.name));
+                types.forEach(t => type.push(t.type.name));
                 
             const pokemon = {
                 source: 'pokeApi',
                 id,
-                name: resp.data.name,
+                name,
                 hp: stat.hp,
                 attack: stat.attack,
                 defense: stat.defense,
                 speed: stat.speed,
-                height: resp.data.height,
-                weight: resp.data.weight,
+                height,
+                weight,
                 img: sprites.other['official-artwork'].front_default,
                 types: type
             };
