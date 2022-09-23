@@ -3,8 +3,9 @@ import { useState, useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import Paginated from './Paginated';
-import { getPokemons, getTypes, filterPokemonsByCreated, filterPokemonsByType, orderByName, orderByAttack } from '../actions';
+import { getPokemons, getTypes, filterPokemonsByCreated, filterPokemonsByType, orderByName, orderByAttack, getPokemonByName } from '../actions';
 import PokemonCard from './PokemonCard';
+import SearchBar from './SearchBar';
 
 export default function Home(){
 
@@ -17,9 +18,9 @@ export default function Home(){
     const [orderedBy, setOrderedBy] = useState('');
 
     //
-    const allPokemons = pokemonList.length;
-    const lastPokemon = currentPage * pokemonsPerPage;
-    const firstPokemon = lastPokemon - pokemonsPerPage;
+    const allPokemons = pokemonList.length; // 1
+    const lastPokemon = currentPage * pokemonsPerPage; // 12
+    const firstPokemon = lastPokemon - pokemonsPerPage; // 12 - 12 = 0
     const currentPokemons = pokemonList.slice(firstPokemon, lastPokemon);
     
     // Functions
@@ -58,11 +59,16 @@ export default function Home(){
         setOrderedBy(`Attack-${e.target.value}`);
     }
 
+    const handleSubmit = (e) => {
+        dispatch(getPokemonByName(e.target.value));
+    }
+
     return(
         <div>
             <NavLink to='/createPokemon'>Create a Pokemon!</NavLink><br/>
             <NavLink to='/'>Landing</NavLink>
             <h1>Gotta catch em all</h1>
+            <SearchBar/>
             <button onClick={(e) => handleClick(e)}>
                 Volver a cargar todos los personajes
             </button>
@@ -95,9 +101,9 @@ export default function Home(){
                     <select onChange={ (e) => handleFilterByType(e)} >
                         <option value='All'>all</option>
                         {
-                            typeList?.map( (t) => {
+                            typeList?.map( (t,i) => {
                                 return(
-                                    <option key={t} value={t}>{t}</option>
+                                    <option key={i} value={t}>{t}</option>
                                  )})
                         }
                     </select>
@@ -111,9 +117,9 @@ export default function Home(){
             </div>
             <div>
             {
-                    currentPokemons?.map( (p) => {
+                    currentPokemons?.map( (p,i) => {
                         return(
-                            <div key={p.id}>
+                            <div key={i}>
                                 <NavLink to={`/home/${p.id}`}>
                                     <PokemonCard name={p.name} img={p.img} types={p.types}/>
                                 </NavLink>

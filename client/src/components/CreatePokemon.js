@@ -20,17 +20,12 @@ import { createPokemon } from '../actions';
     })
 
     let handleChange = (e) => {
-        console.log(e)
         setInput((prev) => ({...prev, [e.target.name]: e.target.value}))
     };
 
-    // hook
-    // let dispatch = React.useDispatch();
-
     let handleSubmit = (e) => {
         e.preventDefault();
-        // console.log(input);
-        // dispatch(createPokemon(input));
+        console.log(input);
         createPokemon(input);
         setInput({
             name:'',
@@ -48,7 +43,7 @@ import { createPokemon } from '../actions';
 
     return(
         <React.Fragment>
-            <div>FORMULARIO</div>
+            <h1>Create your Pokemon!!</h1>
             <br/>
             <form onSubmit={e => handleSubmit(e)}>
                 <div>
@@ -56,11 +51,11 @@ import { createPokemon } from '../actions';
                     <input type={'text'} name={'name'} value={input.name}
                     onChange={(e) => handleChange(e)}/>
                 </div>
-                <div>
+                {/* <div>
                     <label>Abilities</label>
                     <input type={'text'} name={'abilities'} value={input.abilities}
                     onChange={(e) => handleChange(e)}/>
-                </div>
+                </div> */}
                 <div>
                     <label>Image</label>
                     <input type={'text'} name={'img'} value={input.img}

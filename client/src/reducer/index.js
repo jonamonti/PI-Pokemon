@@ -25,6 +25,11 @@ export default function rootReducer(state= initialState, action) {
                 ...state,
                 pokemonDetail: action.payload.data
             }
+        case 'GET_POKEMON_BY_NAME':
+            return{
+                ...state,
+                pokemonList: [action.payload.data]
+            }
         case 'FILTER_BY_CREATED':
             // const allCharacters = useSelector((state) => state.pokemonList);
             const a = state.allPokemons;
@@ -87,6 +92,10 @@ export default function rootReducer(state= initialState, action) {
             return{
                 ...state,
                 pokemonDetail: []
+            }
+        case 'CREATE_POKEMON':
+            return{
+
             }
         default:
             return{

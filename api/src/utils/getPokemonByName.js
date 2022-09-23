@@ -52,7 +52,8 @@ module.exports = {
             speed,
             height,
             weight,
-            types
+            types,
+            img
         }
 
         return pokemon;

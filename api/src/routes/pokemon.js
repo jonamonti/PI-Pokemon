@@ -49,7 +49,8 @@ router.get('/:id', async (req, res) => {
 
 // POST /pokemons
 router.post('/', async (req, res) => {
-    const { id, name, hp, attack, defense, speed, height, weight, type, img } = req.body;
+    let { name, hp, attack, defense, speed, height, weight, type, img } = req.body;
+    type = type.split(' '); 
 
     if (!name) return res.status(404).json('Name must exist');
 
@@ -61,7 +62,6 @@ router.post('/', async (req, res) => {
 
     try {
         const newPokemon = await Pokemon.create({
-            id,
             name,
             hp,
             attack,

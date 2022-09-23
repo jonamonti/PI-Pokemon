@@ -12,29 +12,55 @@ module.exports = {
         const queryCondition = { include: Type };
         const queryResult = await Pokemon.findAll(queryCondition);
 
-        let {id, name, hp, attack, defense, speed, height, weight, img} = queryResult[0];
+        let arr=[];
 
-        let arr = [];
-        // arr = queryResult[0].dataValues;
-        // console.log(queryResult[0].dataValues);
-        let types = [];
-                queryResult[0].types.forEach(t => types.push(t.name));
+        queryResult.map( el => {
+            let {id, name, hp, attack, defense, speed, height, weight, img} = el;
 
-        const pokemon = {
-            source: 'database',
-            id,
-            name,
-            hp,
-            attack,
-            defense,
-            speed,
-            height,
-            weight,
-            img,
-            types
-        }
-        arr.push(pokemon);
+            let types = [];
+                el.types.forEach(t => types.push(t.name));
+
+            let pokemon = {
+                source: 'database',
+                id,
+                name,
+                hp,
+                attack,
+                defense,
+                speed,
+                height,
+                weight,
+                img,
+                types
+            }
+            arr.push(pokemon);
+        })
+
         return arr;
-
     }
 }
+
+        // let {id, name, hp, attack, defense, speed, height, weight, img} = queryResult[0];
+
+        // let arr = [];
+        // // arr = queryResult[0].dataValues;
+        // console.log(queryResult);
+        // let types = [];
+        //         queryResult[0].types.forEach(t => types.push(t.name));
+
+        // const pokemon = {
+        //     source: 'database',
+        //     id,
+        //     name,
+        //     hp,
+        //     attack,
+        //     defense,
+        //     speed,
+        //     height,
+        //     weight,
+        //     img,
+        //     types
+        // }
+        // arr.push(pokemon);
+        // return arr;
+
