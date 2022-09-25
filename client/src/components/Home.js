@@ -3,7 +3,7 @@ import { useState, useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import Paginated from './Paginated';
-import { getPokemons, getTypes, filterPokemonsByCreated, filterPokemonsByType, orderByName, orderByAttack, getPokemonByName } from '../actions';
+import { getPokemons, getTypes, filterPokemonsByCreated, filterPokemonsByType, orderByName, orderByAttack } from '../actions';
 import PokemonCard from './PokemonCard';
 import SearchBar from './SearchBar';
 
@@ -14,7 +14,7 @@ export default function Home(){
     const typeList = useSelector(state => state.typeList); // esto es equivalente a mapStateToProps(state)
     // Local states
     const [currentPage, setCurrentPage] = useState(1);
-    const [pokemonsPerPage, setPokemonsPerPage] = useState(12);
+    const [pokemonsPerPage] = useState(12);
     const [orderedBy, setOrderedBy] = useState('');
 
     //
@@ -57,10 +57,6 @@ export default function Home(){
     const handleSortByAttack = (e) => {
         dispatch(orderByAttack(e.target.value));
         setOrderedBy(`Attack-${e.target.value}`);
-    }
-
-    const handleSubmit = (e) => {
-        dispatch(getPokemonByName(e.target.value));
     }
 
     return(

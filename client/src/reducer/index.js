@@ -95,7 +95,7 @@ export default function rootReducer(state= initialState, action) {
             }
         case 'CREATE_POKEMON':
             return{
-
+                ...state
             }
         default:
             return{

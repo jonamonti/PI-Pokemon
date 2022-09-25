@@ -50,7 +50,9 @@ router.get('/:id', async (req, res) => {
 // POST /pokemons
 router.post('/', async (req, res) => {
     let { name, hp, attack, defense, speed, height, weight, type, img } = req.body;
-    type = type.split(' '); 
+
+    // console.log(`--- type ---\n ${type}`); 
+    // console.log(`--- typeOf type ---\n ${Array.isArray(type)}`); 
 
     if (!name) return res.status(404).json('Name must exist');
 

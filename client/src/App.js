@@ -1,6 +1,7 @@
 // CONFIGURATION
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import OtherPaths from './components/OtherPaths';
 
 
 import './App.css';
@@ -19,6 +20,7 @@ function App() {
         <Route path={'/home/:id'} component={PokemonDetail}/>
         <Route path={'/home'} component={Home}/>
         <Route path={'/createPokemon'} component={CreatePokemon}/>
+        <Route path={'*'} component={OtherPaths}/>
       </Switch>
     </React.Fragment>
 

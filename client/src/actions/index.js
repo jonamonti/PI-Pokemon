@@ -81,17 +81,16 @@ export function cleanPokemonDetail(){
 }
 
 export function createPokemon(info){
-    const {name, type, img, hp, attack, defense} = info
-    console.log(name);
+    console.log(info);
 
     return async (dispatch) => {
-        var res = await axios.post(`http://localhost:3001/pokemons`, {name, type, img, hp, attack, defense});
+        var res = await axios.post(`http://localhost:3001/pokemons`, info);
 
         return dispatch({
             type: 'CREATE_POKEMON',
             payload: res
         })
-    }
+    }   
 
 }
 
