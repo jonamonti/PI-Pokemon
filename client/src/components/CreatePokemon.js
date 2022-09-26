@@ -6,7 +6,7 @@ import { createPokemon } from '../actions';
 import { useSelector } from 'react-redux';
 
 // export default function CreatePokemon({createPokemon}){
-    function CreatePokemon({createPokemon}){
+function CreatePokemon({createPokemon}) {
 
     // local states
     let [input, setInput] = useState({
@@ -81,7 +81,7 @@ import { useSelector } from 'react-redux';
             }
             setInput({...input, [inputName]: inputValue})
         }
-    }
+    };
 
     let buttonEnabler = () => {
         let formInputs = Object.values(input).map( (e) => !!e ).reduce( (prev, curr) => (prev + curr));
@@ -93,11 +93,11 @@ import { useSelector } from 'react-redux';
         } else {
             setDisabled(true);
         }
-    }
+    };
 
-    let handleDelete = (e) => {
-        setInput({...input, type: input.type?.filter((t) => t !== e.target.value)})
-    }
+    // let handleDelete = (e) => {
+    //     setInput({...input, type: input.type?.filter((t) => t !== e.target.value)});
+    // };
 
     let handleChange = (e) => {
         buttonEnabler();
@@ -112,8 +112,6 @@ import { useSelector } from 'react-redux';
                 ...input,
                 type: [...input.type, e.target.value]
             })
-        } else {
-            setInput({...input})
         }
     }
 
@@ -146,7 +144,8 @@ import { useSelector } from 'react-redux';
                     <input type={'text'} name={'name'} value={input.name} onChange={handleChange} onFocus={buttonEnabler}/>
                     {
                         !input.name ? <span>Only letters!</span> : null
-                    }{
+                    }
+                    {
                         !error.name ? null : <span>&#10060;{error.name}</span>
                     }
                 </div>
@@ -162,7 +161,7 @@ import { useSelector } from 'react-redux';
                 </div>
                 <div>
                     <label> Types</label>
-                    <select name='type' onChange={handleSelect} >
+                    <select name='type' onChange={handleSelect}>
                         <option key='all' value='all'>All</option>
                         {
                             typeList?.map( (el,i) => {
@@ -172,14 +171,14 @@ import { useSelector } from 'react-redux';
                             })
                         }
                     </select>
-                    {
+                    {/* {
                         input.type?.map( (el, i) => {
                             return(
                                 <div key={i}>{el}<button value={el} onClick={handleDelete} >X</button>
                                 </div>
                             )
                         })
-                    }
+                    } */}
                 </div>
                 <div>
                     <label>HP</label>
@@ -251,7 +250,6 @@ import { useSelector } from 'react-redux';
         </React.Fragment>
     )
 }
-
 // si no uso hooks para hacer el dispatch del action, uso connect
 
 function mapDispatchToProps(dispatch){
