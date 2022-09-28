@@ -1,0 +1,43 @@
+.sectionCards {
+    /* display: flex; */
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 1rem;
+    text-decoration: none;
+    margin: 1em;
+}
+
+.div {
+    background-color: #fff3b0;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 8px;
+    z-index: 1;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.select {
+    font-family: 'Azeret Mono:100', monospace;
+    padding: 5px;
+    margin: 5px;
+}
+
+.paginated{
+    font-family: 'Azeret Mono:100', monospace;
+    background-color: #fbf3c9;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 5px;
+}
+
+.loader{
+    display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}

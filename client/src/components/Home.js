@@ -5,35 +5,35 @@ import { NavLink } from 'react-router-dom';
 import Paginated from './Paginated';
 import { getPokemons, getTypes, filterPokemonsByCreated, filterPokemonsByType, orderByName, orderByAttack } from '../actions';
 import PokemonCard from './PokemonCard';
-import SearchBar from './SearchBar';
+// import SearchBar from './SearchBar';
+import NavBar from './NavBar';
+import styles from '../cssModule/Home.module.css';
 
 export default function Home(){
 
     // Global states
     const pokemonList = useSelector(state => state.pokemonList);
-    const typeList = useSelector(state => state.typeList); // esto es equivalente a mapStateToProps(state)
+    const typeList = useSelector(state => state.typeList);
+
     // Local states
     const [currentPage, setCurrentPage] = useState(1);
     const [pokemonsPerPage] = useState(12);
     const [orderedBy, setOrderedBy] = useState('');
 
-    //
-    const allPokemons = pokemonList.length; // 1
-    const lastPokemon = currentPage * pokemonsPerPage; // 12
-    const firstPokemon = lastPokemon - pokemonsPerPage; // 12 - 12 = 0
+    // variables
+    const allPokemons = pokemonList.length;
+    const lastPokemon = currentPage * pokemonsPerPage;
+    const firstPokemon = lastPokemon - pokemonsPerPage;
     const currentPokemons = pokemonList.slice(firstPokemon, lastPokemon);
     
     // Functions
     const dispatch = useDispatch();
-    // cuando se monte el componente quiero que me traigan todos los pokemones
     useEffect(() => {
-        dispatch(getPokemons())
-        dispatch(getTypes())
-            // esto es equivalente a mapDispatchToProps(dispatch)
+        dispatch(getPokemons());
+        dispatch(getTypes());
     }, [dispatch]);
 
     function handleClick(e){
-        // e.preventDefault();
         dispatch(getPokemons());
     }
 
@@ -42,89 +42,80 @@ export default function Home(){
     }
 
     const handleFilterCreated = (e) => {
+        e.preventDefault();
         dispatch(filterPokemonsByCreated(e.target.value));
     }
 
     const handleFilterByType = (e) => {
+        e.preventDefault();
         dispatch(filterPokemonsByType(e.target.value));    
     }
 
     const handleSortByName = (e) => {
+        e.preventDefault();
         dispatch(orderByName(e.target.value));
         setOrderedBy(`Name-${e.target.value}`);
     }
 
     const handleSortByAttack = (e) => {
+        e.preventDefault();
         dispatch(orderByAttack(e.target.value));
         setOrderedBy(`Attack-${e.target.value}`);
     }
 
     return(
         <div>
-            <NavLink to='/createPokemon'>Create a Pokemon!</NavLink><br/>
-            <NavLink to='/'>Landing</NavLink>
-            <h1>Gotta catch em all</h1>
-            <SearchBar/>
-            <button onClick={(e) => handleClick(e)}>
-                Volver a cargar todos los personajes
-            </button>
-            <div>
-                <label>Order by: name
-                    <select onChange={(e) => handleSortByName(e)} >
-                        <option></option>
-                        <option value='asc'>Ascendente</option>
-                        <option value='desc'>Descendente</option>
-                    </select>
-                </label>
-                <br/>
-                <label>Order by: attack
-                    <select onChange={ (e) => handleSortByAttack(e)} >
-                        <option></option>
-                        <option value='asc'>Weaker-stronger</option>
-                        <option value='desc'>Stronger-weaker</option>
-                    </select>
-                </label>
-                <br/>
-                <label>Filter by: Existing or created
-                    <select onChange={(e) => handleFilterCreated(e)} >
-                        <option value='All'>Todos</option> 
-                        <option value='pokeApi'>Existente</option>
-                        <option value='database'>Creado por nosotros</option>
-                    </select>
-                </label>
-                <br/>
-                <label>Filter by: type
-                    <select onChange={ (e) => handleFilterByType(e)} >
-                        <option value='All'>all</option>
-                        {
-                            typeList?.map( (t,i) => {
-                                return(
-                                    <option key={i} value={t}>{t}</option>
-                                 )})
-                        }
-                    </select>
-                </label>
-                <br/><br/><br/>
+            <NavBar/>
+            <div className={styles.div}>
+                <select className={styles.select} onChange={(e) => handleSortByName(e)}>
+                    <option value='title' disabled>Order by: name</option>
+                    <option value='asc'>Ascending</option>
+                    <option value='desc'>Descending</option>
+                </select>
+                <select className={styles.select} onChange={ (e) => handleSortByAttack(e)}>
+                    <option value='title' disabled>Order by: attack</option>
+                    <option value='asc'>Weaker-stronger</option>
+                    <option value='desc'>Stronger-weaker</option>
+                </select>
+                <select className={styles.select} onChange={(e) => handleFilterCreated(e)}>
+                    <option value='title' disabled>Filter: pokeApi or created</option>
+                    <option value='All'>All</option>
+                    <option value='pokeApi'>PokeApi</option>
+                    <option value='database'>Created</option>
+                </select>
+                <select className={styles.select} onChange={ (e) => handleFilterByType(e)}>
+                    <option value='title' disabled>Filter: type</option>
+                    <option value='All'>All</option>
+                    {
+                        typeList?.map( (t,i) => {
+                            return(
+                                <option key={i} value={t}>{t}</option>
+                                )})
+                    }
+                </select>
+            </div>
+            <div className={styles.paginated}>
                 <Paginated 
                     pokemonsPerPage={pokemonsPerPage}
-                    allPokemons={allPokemons} 
+                    allPokemons={allPokemons}
                     paginated={paginated}>
                 </Paginated>
             </div>
-            <div>
+            <section className={styles.sectionCards} >
             {
-                    currentPokemons?.map( (p,i) => {
-                        return(
-                            <div key={i}>
-                                <NavLink to={`/home/${p.id}`}>
-                                    <PokemonCard name={p.name} img={p.img} types={p.types}/>
-                                </NavLink>
-                            </div>
+                    currentPokemons.length > 0 ? 
+                        currentPokemons?.map( (p,i) => {
+                            return(
+                                <div key={i}>
+                                    {/* <NavLink to={`/home/${p.id}`}> */}
+                                        <PokemonCard name={p.name} img={p.img} types={p.types} id={p.id}/>
+                                    {/* </NavLink> */}
+                                </div>
 
-                        )
-                    })
+                            )
+                        }) : <div className={styles.loader}>loading</div>
                 }
-            </div>
+            </section>
         </div>
     )
 }

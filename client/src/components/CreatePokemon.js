@@ -1,12 +1,17 @@
 // imports
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { NavLink, useHistory } from 'react-router-dom';
 import { createPokemon } from '../actions';
 import { useSelector } from 'react-redux';
+// import validation from '../validation';
+import styles from '../cssModule/CreatePokemon.module.css'
 
-// export default function CreatePokemon({createPokemon}){
-function CreatePokemon({createPokemon}) {
+let validation = (input) => {
+    // if (input.name)
+}
+
+export default function CreatePokemon(){
 
     // local states
     let [input, setInput] = useState({
@@ -17,7 +22,7 @@ function CreatePokemon({createPokemon}) {
         attack:'',
         defense:'',
         speed:'',
-        height:'',
+        height:'', 
         weight:''
     });
 
@@ -38,6 +43,8 @@ function CreatePokemon({createPokemon}) {
     // hooks ---------------------------------------------------------
     const typeList = useSelector(state => state.typeList);
     const allPokemons = useSelector(state => state.allPokemons);
+    const dispatch = useDispatch();
+    const history = useHistory();
 
     // functions ---------------------------------------------------------
     let validateInput = (inputName, inputValue) => {
@@ -86,7 +93,7 @@ function CreatePokemon({createPokemon}) {
     let buttonEnabler = () => {
         let formInputs = Object.values(input).map( (e) => !!e ).reduce( (prev, curr) => (prev + curr));
         let formErrors = Object.values(error).map( (e) => !!e ).reduce( (prev, curr) => (prev + curr));
-        console.log(`--- formInputs ---${formInputs}\n ---formErrors---${formErrors}\n --- disabled ---${disabled}`)
+        // console.log(`--- formInputs ---${formInputs}\n ---formErrors---${formErrors}\n --- disabled ---${disabled}`)
 
         if (formInputs === 9 && formErrors === 0) {
             setDisabled(false);
@@ -95,15 +102,16 @@ function CreatePokemon({createPokemon}) {
         }
     };
 
-    // let handleDelete = (e) => {
-    //     setInput({...input, type: input.type?.filter((t) => t !== e.target.value)});
-    // };
+    let handleDelete = (e) => {
+        e.preventDefault();
+        setInput({...input, type: input.type?.filter((t) => t !== e.target.value)});
+    };
 
     let handleChange = (e) => {
         buttonEnabler();
-        // console.log(e.target.name, e.target.value);
-        setInput((prev) => ({...prev, [e.target.name]: e.target.value}));
         validateInput(e.target.name, e.target.value);
+        setInput((prev) => ({...prev, [e.target.name]: e.target.value}));
+        ;
     };
 
     let handleSelect = (e) => {
@@ -117,8 +125,7 @@ function CreatePokemon({createPokemon}) {
 
     let handleSubmit = (e) => {
         e.preventDefault();
-        console.log(input);
-        createPokemon(input);
+        dispatch(createPokemon(input));
         setInput({
             name:'',
             abilities:'',
@@ -130,39 +137,37 @@ function CreatePokemon({createPokemon}) {
             speed:'',
             height:'',
             weight:''
-        })
+        });
+        history.push('/home');
     }
 
     // render ---------------------------------------------------------
     return(
-        <React.Fragment>
-            <h1>Create your Pokemon!!</h1>
+    <React.Fragment>
+        <div className={styles.background}> 
+            <h1 className={styles.h1}>Create your Pokemon!!</h1>
             <br/>
-            <form onSubmit={e => handleSubmit(e)}>
+            <form className={styles.form} onSubmit={e => handleSubmit(e)}>
                 <div>
-                    <label>Name</label>
-                    <input type={'text'} name={'name'} value={input.name} onChange={handleChange} onFocus={buttonEnabler}/>
+                    <label className={styles.label}>Name</label>
+                    <input className={styles.input} type='text' name={'name'} value={input.name} placeholder='Only letters!'
+                            onChange={handleChange}/>
                     {
-                        !input.name ? <span>Only letters!</span> : null
-                    }
-                    {
-                        !error.name ? null : <span>&#10060;{error.name}</span>
+                        !error.name ? null : <span className={styles.spanError}> &#10060; {error.name}</span>
                     }
                 </div>
                 <div>
-                    <label>Image</label>
-                    <input type={'text'} name={'img'} value={input.img} onChange={handleChange} onFocus={buttonEnabler}/>
+                    <label className={styles.label}>Image</label>
+                    <input className={styles.input} type='text' name={'img'} value={input.img} placeholder='Link to your image'
+                            onChange={handleChange}/>
                 {
-                    !input.img ? <span>Add a link to a jpg, jpeg, png, webp, avif, gif or svg image!</span> : null
-                }
-                {
-                    !error.img ? null : <span>&#10060;{error.img}</span>
+                    !error.img ? null : <span className={styles.spanError}> &#10060; {error.img}</span>
                 }
                 </div>
                 <div>
-                    <label> Types</label>
-                    <select name='type' onChange={handleSelect}>
-                        <option key='all' value='all'>All</option>
+                    <label className={styles.label}> Types</label>
+                    <select className={styles.input} name='type' onChange={handleSelect}>
+                        <option key='all' value='all' >Please select</option>
                         {
                             typeList?.map( (el,i) => {
                                 return(
@@ -171,91 +176,81 @@ function CreatePokemon({createPokemon}) {
                             })
                         }
                     </select>
-                    {/* {
-                        input.type?.map( (el, i) => {
-                            return(
-                                <div key={i}>{el}<button value={el} onClick={handleDelete} >X</button>
-                                </div>
-                            )
-                        })
-                    } */}
+                    <ul>
+                        {
+                            input.type?.map( (el, i) => {
+                                return(
+                                    <li key={i} value={el} >{el}<button key={i} value={el} onClick={handleDelete} >x</button></li>
+                                )
+                            })
+                        }
+                    </ul>
                 </div>
                 <div>
-                    <label>HP</label>
-                    <input type={'text'} name={'hp'} value={input.hp} onChange={handleChange} onFocus={buttonEnabler}/>
+                    <label className={styles.label}>Hp</label>
+                    <input className={styles.input} type='number' name={'hp'} value={input.hp} placeholder='number between 1 and 100'
+                            onChange={handleChange}/>
                 {
-                    !input.hp ? <span>number between 1 and 100</span> : null
-                }
-                {
-                    !error.hp ? null : <span>&#10060;{error.hp}</span>
-                }
-                </div>
-                <div>
-                    <label>Attack</label>
-                    <input type={'text'} name={'attack'} value={input.attack} onChange={handleChange} onFocus={buttonEnabler}/>
-                {
-                    !input.attack ? <span>number between 1 and 100</span> : null
-                }
-                {
-                    !error.attack ? null : <span>&#10060;{error.attack}</span>
+                    !error.hp ? null : <span className={styles.spanError}> &#10060; {error.hp}</span>
                 }
                 </div>
                 <div>
-                    <label>Defense</label>
-                    <input type={'text'} name={'defense'} value={input.defense} onChange={handleChange} onFocus={buttonEnabler}/>
+                    <label className={styles.label}>Attack</label>
+                    <input className={styles.input} type='number' name={'attack'} value={input.attack} placeholder='number between 1 and 100'
+                            onChange={handleChange}/>
                 {
-                    !input.defense ? <span>number between 1 and 100</span> : null
-                }
-                {
-                    !error.defense ? null : <span>&#10060;{error.defense}</span>
+                    !error.attack ? null : <span className={styles.spanError}> &#10060; {error.attack}</span>
                 }
                 </div>
                 <div>
-                    <label>Speed</label>
-                    <input type={'text'} name={'speed'} value={input.speed} onChange={handleChange} onFocus={buttonEnabler}/>
+                    <label className={styles.label}>Defense</label>
+                    <input className={styles.input} type='number' name={'defense'} value={input.defense} placeholder='number between 1 and 100'
+                            onChange={handleChange}/>
                 {
-                    !input.speed ? <span>number between 1 and 100</span> : null
-                }
-                {
-                    !error.speed ? null : <span>&#10060;{error.speed}</span>
+                    !error.defense ? null : <span className={styles.spanError}> &#10060; {error.defense}</span>
                 }
                 </div>
                 <div>
-                    <label>Height</label>
-                    <input type={'text'} name={'height'} value={input.height} onChange={handleChange} onFocus={buttonEnabler}/>
+                    <label className={styles.label}>Speed</label>
+                    <input className={styles.input} type='number' name={'speed'} value={input.speed} placeholder='number between 1 and 100'
+                            onChange={handleChange}/>
                 {
-                    !input.height ? <span>number between 1 and 1000</span> : null
-                }
-                {
-                    !error.height ? null : <span>&#10060;{error.height}</span>
+                    !error.speed ? null : <span className={styles.spanError}> &#10060; {error.speed}</span>
                 }
                 </div>
                 <div>
-                    <label>Weight</label>
-                    <input type={'text'} name={'weight'} value={input.weight} onChange={handleChange} onFocus={buttonEnabler}/>
+                    <label className={styles.label}>Height</label>
+                    <input className={styles.input} type='number' name={'height'} value={input.height} placeholder='number between 1 and 1000'
+                            onChange={handleChange}/>
                 {
-                    !input.weight ? <span>number between 1 and 1000</span> : null
+                    !error.height ? null : <span className={styles.spanError}> &#10060; {error.height}</span>
                 }
+                </div>
+                <div>
+                    <label className={styles.label}>Weight</label>
+                    <input className={styles.input} type='number' name={'weight'} value={input.weight} placeholder='number between 1 and 1000'
+                            onChange={handleChange}/>
                 {
-                    !error.weight ? null : <span>&#10060;{error.weight}</span>
+                    !error.weight ? null : <span className={styles.spanError}> &#10060; {error.weight}</span>
                 }
                 </div>
                 <br/>
                 <input disabled={disabled} type={'submit'} value={'CREATE'}/>
+                <NavLink to={'/home'} >
+                    <button className={styles.button}>Home</button>
+                </NavLink>
             </form>
-            <NavLink to={'/home'} >
-                <button>Home</button>
-            </NavLink>
+        </div>
 
-        </React.Fragment>
+    </React.Fragment>
     )
 }
 // si no uso hooks para hacer el dispatch del action, uso connect
 
-function mapDispatchToProps(dispatch){
-    return{
-        createPokemon: (input) => dispatch(createPokemon(input))
-    }
-}
+// function mapDispatchToProps(dispatch){
+//     return{
+//         createPokemon: (input) => dispatch(createPokemon(input))
+//     }
+// }
 
-export default connect(null, mapDispatchToProps)(CreatePokemon);
+// export default connect(null, mapDispatchToProps)(CreatePokemon);

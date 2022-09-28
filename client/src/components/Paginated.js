@@ -1,24 +1,24 @@
 import React from 'react';
+import styles from '../cssModule/Paginated.module.css';
 
-export default function Paginated({pokemonsPerPage, allPokemons, paginated}) {
+export default function Paginated({pokemonsPerPage, allPokemons, paginated}) { // 12, 18, fn
 
     const pageNumbers = [];
-    for(let i = 1; i < Math.ceil(allPokemons/pokemonsPerPage); i++) {
+    for(let i = 1; i <= Math.ceil(allPokemons/pokemonsPerPage); i++) {
         pageNumbers.push(i);
     }
 
     return(
         <nav>
-            <ul>
+            <section>
                 {
                     pageNumbers?.map( (number) => {
                         return(
-                            <li key={number}>
-                                <button onClick={ () => {paginated(number)}}>{number}</button>
-                            </li>)
+                                <button className={styles.button} key={number} onClick={ () => {paginated(number)}}>{number}</button>
+                            )
                     })
                 }
-            </ul>
+            </section>
         </nav>
     )
 }

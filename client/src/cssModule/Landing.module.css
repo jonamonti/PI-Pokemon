@@ -1,0 +1,49 @@
+.background{
+    background-image: url("https://images.unsplash.com/photo-1638613067237-b1127ef06c00?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2832&q=80");
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo{
+    /* display: flex; */
+    justify-content: flex-start;
+}
+
+.img{
+    width: 30rem;
+}
+
+.button {
+    position: absolute;
+    top: 17rem;
+    left: 13rem;
+    z-index: 1;
+    padding: 20px;
+
+    background-color: #fcca46;
+    opacity: 0.8;
+
+    border: none;
+    border-radius: 4px;
+    
+    font-family: 'Azeret Mono:100', monospace;
+    text-decoration: none;
+    color: blue;
+
+    cursor: pointer;
+}
+
+/* .footer{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-top: 30%;
+    backdrop-filter: blur(8px);
+
+} */

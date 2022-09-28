@@ -1,0 +1,24 @@
+.searchBar {
+    /* border: solid 1px #ced4da; */
+    width: fit-content;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+}
+
+.input{
+    padding: 8px;
+    border: none;
+    font-family: 'Azeret Mono', monospace;
+}
+
+.input:focus {
+    outline: none;
+}
+
+.button {
+    background-color: #fff3b0;
+    border: none;
+    cursor: pointer;
+    font-family: 'Azeret Mono:100', monospace;
+}

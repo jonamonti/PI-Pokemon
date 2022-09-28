@@ -29,6 +29,7 @@ export function getPokemonByName(name){
 
             return dispatch({
                 type: 'GET_POKEMON_BY_NAME',
+                // payload: {response: json.data, name}
                 payload: json.data
             })
     }

@@ -16,7 +16,6 @@ function App() {
     <React.Fragment>
       <Switch>
         <Route exact path={'/'} component={Landing}/>
-        {/* <Route path={'/home'} component={NavBar}/> */}
         <Route path={'/home/:id'} component={PokemonDetail}/>
         <Route path={'/home'} component={Home}/>
         <Route path={'/createPokemon'} component={CreatePokemon}/>

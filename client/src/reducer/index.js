@@ -26,13 +26,14 @@ export default function rootReducer(state= initialState, action) {
                 pokemonDetail: action.payload.data
             }
         case 'GET_POKEMON_BY_NAME':
+            // if (action.payload.response === `Did not found a pokemon with this name: ${action.payload.name}`) alert('ese pokemon no existe');
             return{
                 ...state,
                 pokemonList: [action.payload.data]
             }
         case 'FILTER_BY_CREATED':
-            // const allCharacters = useSelector((state) => state.pokemonList);
             const a = state.allPokemons;
+            // const a = state.pokemonList;
             const statusFilter = action.payload === 'All' 
                                         ? a
                                         : a.filter( (el) => el.source === action.payload);
@@ -42,6 +43,7 @@ export default function rootReducer(state= initialState, action) {
             }
         case 'FILTER_BY_TYPE':
             const b = state.allPokemons;
+            // const b = state.pokemonList;
             const typeFilter = action.payload === 'All'
                                         ? b
                                         : b.filter( (el) => el.types.includes(action.payload) );

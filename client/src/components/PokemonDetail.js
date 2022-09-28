@@ -25,12 +25,13 @@ export default function PokemonDetail(){
             <div>Id: {id}</div>
             <div>Name: {name}</div>
             <div>Source: {source}</div>
-            <div>Type: {types}
-                {/* <ul>
+            <div>Type
+                {/* Type: {types} */}
+                <ul>
                     {
-                        types.map( (t) => { return( <li>{t}</li> ) })
+                        types?.map( (t,i) => { return( <li key={i}>{t}</li> ) })
                     }
-                </ul> */}
+                </ul>
             </div>
             <div>HP: {hp}</div>
             <div>Attack: {attack}</div>
