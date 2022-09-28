@@ -24,16 +24,18 @@ export function getPokemonById(id){
 
 export function getPokemonByName(name){
     return async (dispatch) => {
-            var json = await axios.get(`http://localhost:3001/pokemons?name=${name}`);
-            console.log(json.data);
 
-            return dispatch({
-                type: 'GET_POKEMON_BY_NAME',
-                // payload: {response: json.data, name}
-                payload: json.data
-            })
+        var json = await axios.get(`http://localhost:3001/pokemons?name=${name}`);
+        console.log(json.data);
+
+        return dispatch({
+            type: 'GET_POKEMON_BY_NAME',
+            payload: json.data
+        })
+                
     }
 }
+
 
 export function getTypes(){
     return async (dispatch) => {

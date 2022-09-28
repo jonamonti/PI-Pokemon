@@ -113,7 +113,9 @@ export default function Home(){
                                 </div>
 
                             )
-                        }) : <div className={styles.loader}>loading</div>
+                        }) : <div className={styles.loader}>loading
+                                <img src='https://cdn130.picsart.com/292764002044201.gif?to=min&r=1024' alt='poke'/>
+                            </div>
                 }
             </section>
         </div>
