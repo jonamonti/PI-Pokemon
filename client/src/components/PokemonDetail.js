@@ -31,11 +31,13 @@ export default function PokemonDetail(){
         history.push('/home');
     }
 
+    const defaultImg = 'https://image.pngaaa.com/250/96250-middle.png';
+
     return(
         <div className={styles.general}>
             <div className={styles.container}>
                 <div className={styles.imgContainer}>
-                    <img  className={styles.img} src={img} alt='img not found' width='200px' height='200px'/><br/>
+                    <img  className={styles.img} src={!img ? defaultImg : img} alt='...loading' width='200px' height='200px'/><br/>
                 </div>
                 <div className={styles.info}>
                     <h1 className={styles.h1}>{name}</h1>     
@@ -61,7 +63,7 @@ export default function PokemonDetail(){
                     }
                     
                     <NavLink to={'/home'}>
-                        <button className={styles.button}>&#127969;</button>
+                        <button className={styles.button} onClick={() => handleClick()}>&#127969;</button>
                     </NavLink>
                 </div>
             </div>

@@ -4,7 +4,7 @@ module.exports = {
 
     getAllPokemonsFromApi: async () => {
 
-        const lastPokemonId = 40;
+        const lastPokemonId = 100;
 
         const resp = await axios.get(`https://pokeapi.co/api/v2/pokemon/?offset=0&limit=${lastPokemonId}`);
         let promisesFromResp = resp.data.results.map( el => axios.get(el.url));

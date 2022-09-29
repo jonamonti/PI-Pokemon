@@ -52,14 +52,12 @@ export default function Home(){
         e.preventDefault();
         dispatch(orderByName(e.target.value));
         setOrderedBy(`Name-${e.target.value}`);
-        setCurrentPage(1)
     }
 
     const handleSortByAttack = (e) => {
         e.preventDefault();
         dispatch(orderByAttack(e.target.value));
         setOrderedBy(`Attack-${e.target.value}`);
-        setCurrentPage(1);
     }
 
     const disableOriginDb = () => {
@@ -70,6 +68,15 @@ export default function Home(){
             return false
         }
     }
+
+    const typesOptions = () => {
+        const arr = allPoke.map(el => el.types[0]);
+        const uniqueTypes = [...new Set(arr.map(el => el))]
+        // console.log(uniqueTypes);
+        return uniqueTypes;
+    }
+
+    const displayTypes = typesOptions();
 
     return(
         <div>
@@ -95,7 +102,7 @@ export default function Home(){
                     <option value='default' disabled>Filter: type</option>
                     <option value='All'>All</option>
                     {
-                        typeList?.map( (t,i) => {
+                        displayTypes?.map( (t,i) => {
                             return(
                                 <option key={i} value={t}>{t}</option>
                                 )})

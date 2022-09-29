@@ -19,10 +19,10 @@ function NavBar() {
             <NavLink to={'/'}>
                 <button className={styles.button}>Landing</button>
             </NavLink>
+            <SearchBar/>
             <button className={styles.button} onClick={(e) => handleClick(e)}>
                 Load all pokemons
             </button>
-            <SearchBar/>
             <NavLink to={'/createPokemon'}>
                 <button className={styles.button}>Create Pokemon</button></NavLink>
         </header>
