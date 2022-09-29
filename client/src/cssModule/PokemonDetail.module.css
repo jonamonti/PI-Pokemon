@@ -1,0 +1,78 @@
+.general{
+
+    height: 100vh;
+    width: 100vw;
+
+    background-image: url('https://vn.portal-pokemon.com/anime/series/s2/img/og-image.png');
+    background-size: cover;
+
+    font-family: 'Azeret Mono:100', monospace;
+    /* text-transform: capitalize; */
+}
+.container{
+    padding-top:1rem
+}
+
+.imgContainer{
+    width: 28%;
+    background-color: white;
+    opacity: 95%;
+    margin-left: 1.3rem;
+    padding: 1rem;
+    border-radius: 1rem 1rem 0 0;
+    z-index: 1;
+}
+
+.h1{
+    text-transform: capitalize;
+}
+
+.img{
+    margin-left: 6rem;
+}
+
+.info{
+    width: 28%;
+    background-color: white;
+    opacity: 70%;
+    margin-left: 1.3rem;
+    padding: 1rem;
+    border-radius: 0 0 1rem 1rem;
+    z-index: 1;
+}
+
+.button{
+    margin-left: 22rem;
+    margin-bottom: 0rem;
+    padding: 8px;
+
+    background-color: #fcca46;
+    opacity: 100%;
+
+    border: 2px solid black;
+    border-radius: 4px;
+
+    cursor: pointer;
+    
+    font-family: 'Azeret Mono:100', monospace;
+    font-size: 1.25rem;
+    
+}
+
+.deleteButton{
+    margin-left: 22rem;
+    margin-bottom: 0rem;
+    padding: 8px;
+
+    background-color: #fcca46;
+    opacity: 100%;
+
+    border: 2px solid black;
+    border-radius: 4px;
+
+    cursor: pointer;
+    
+    font-family: 'Azeret Mono:100', monospace;
+    font-size: 1.25rem;
+
+}

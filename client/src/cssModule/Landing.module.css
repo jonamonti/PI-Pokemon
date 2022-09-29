@@ -27,12 +27,14 @@
     background-color: #fcca46;
     opacity: 0.8;
 
-    border: none;
+    border: 2px solid #2a75bb;
     border-radius: 4px;
     
     font-family: 'Azeret Mono:100', monospace;
     text-decoration: none;
-    color: blue;
+    color: #2a75bb;
+    font-weight: 700;
+    font-size: medium;
 
     cursor: pointer;
 }

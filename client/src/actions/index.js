@@ -26,7 +26,6 @@ export function getPokemonByName(name){
     return async (dispatch) => {
 
         var json = await axios.get(`http://localhost:3001/pokemons?name=${name}`);
-        console.log(json.data);
 
         return dispatch({
             type: 'GET_POKEMON_BY_NAME',
@@ -35,7 +34,6 @@ export function getPokemonByName(name){
                 
     }
 }
-
 
 export function getTypes(){
     return async (dispatch) => {
@@ -77,6 +75,12 @@ export function orderByAttack(sort){
     }
 }
 
+export function cleanPokemons(){
+    return{
+        type: 'CLEAN_POKEMONS'
+    }
+}
+
 export function cleanPokemonDetail(){
     return{
         type: 'CLEAN_POKEMON_DETAIL'
@@ -84,7 +88,6 @@ export function cleanPokemonDetail(){
 }
 
 export function createPokemon(info){
-    console.log(info);
 
     return async (dispatch) => {
         var res = await axios.post(`http://localhost:3001/pokemons`, info);
@@ -94,16 +97,16 @@ export function createPokemon(info){
             payload: res
         })
     }   
-
 }
 
-// export function getPokemons() {
-//     return async (dispatch) => {
-//         var json = await axios.get('http://localhost:3001/pokemons', {});
+export function deletePokemon(id) {
+    return async (dispatch) => {
+        console.log('action-',id);
+        var res = await axios.delete(`http://localhost:3001/pokemons/delete`, { data: { id: id }})
+        
 
-//         return dispatch({
-//             type: 'GET_POKEMONS',
-//             payload: json.data
-//         })
-//     }
-// }
+        return dispatch({
+            type: 'DELETE_POKEMON'
+        })
+    }  
+}

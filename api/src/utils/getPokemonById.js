@@ -32,7 +32,7 @@ module.exports = {
         const pokemon = {
             source: 'pokeApi',
             id,
-            name: resp.data.name,
+            name: name.charAt(0)+name.slice(1),
             hp: stat.hp,
             attack: stat.attack,
             defense: stat.defense,

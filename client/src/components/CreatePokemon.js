@@ -2,14 +2,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
-import { createPokemon } from '../actions';
+import { createPokemon, cleanPokemons } from '../actions';
 import { useSelector } from 'react-redux';
-// import validation from '../validation';
 import styles from '../cssModule/CreatePokemon.module.css'
-
-let validation = (input) => {
-    // if (input.name)
-}
 
 export default function CreatePokemon(){
 
@@ -29,7 +24,6 @@ export default function CreatePokemon(){
     let [error, setError] = useState({
         name:'',
         img:'',
-        type:'',
         hp:'',
         attack:'',
         defense:'',
@@ -38,8 +32,6 @@ export default function CreatePokemon(){
         weight:''
     });
 
-    let [disabled, setDisabled] = useState(true);
-
     // hooks ---------------------------------------------------------
     const typeList = useSelector(state => state.typeList);
     const allPokemons = useSelector(state => state.allPokemons);
@@ -47,17 +39,17 @@ export default function CreatePokemon(){
     const history = useHistory();
 
     // functions ---------------------------------------------------------
+
     let validateInput = (inputName, inputValue) => {
         if (inputName === 'name') {
             let allPokemonsNames = allPokemons.map( el => el.name);
             if(/\d|\s|\W/.test(inputValue)) {
-                setError({...error, [inputName]: 'Numbers and special characters are not allowed on name'})
-            } else if (allPokemonsNames.includes(inputValue)){
-                setError({...error, [inputName]: 'This name already exists!'})
+                setError({...error, [inputName]: 'Numbers and special characters are not allowed on name'});
+            } else if (allPokemonsNames.includes(inputValue.toLowerCase())){
+                setError({...error, [inputName]: 'This name already exists!'});
             } else {
                 setError({...error, [inputName]:''});
             }
-            setInput({...input, [inputName]: inputValue});
         }
 
         const numbers = ['hp', 'attack', 'defense', 'speed', 'height', 'weight'];
@@ -65,40 +57,37 @@ export default function CreatePokemon(){
 
             if(['height', 'weight'].includes(inputName)) {
                 if (inputValue && !/^[1-9][0-9]?[0-9]?$|^1000$/.test(inputValue)) {
-                    setError({...error, [inputName]: `${inputName} is a number between 1 and 1000!`})
+                    setError({...error, [inputName]: `${inputName} is a number between 1 and 1000!`});
                 } else {
-                    setError({...error, [inputName]: ''})
+                    setError({...error, [inputName]: ''});
                 }
-                setInput({...input, [inputName]: inputValue})
             } else {
                 if (inputValue && !/^[1-9][0-9]?$|^100$/.test(inputValue)) {
-                    setError({...error, [inputName]: `${inputName} is a number between 1 and 100!`})
+                    setError({...error, [inputName]: `${inputName} is a number between 1 and 100!`});
                 } else {
-                    setError({...error, [inputName]: ''})
+                    setError({...error, [inputName]: ''});
                 }
-                setInput({...input, [inputName]: inputValue})
             }
         }
 
         if (inputName === 'img') {
             if (inputValue && !/^https?:\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(inputValue)) {
-                setError({...error, [inputName]: 'Only jpg, jpeg, png, webp, avif, gif or svg url!'})
+                setError({...error, [inputName]: 'Only jpg, jpeg, png, webp, avif, gif or svg url!'});
             } else {
-                setError({...error, [inputName]:''})
+                setError({...error, [inputName]:''});
             }
-            setInput({...input, [inputName]: inputValue})
         }
     };
 
     let buttonEnabler = () => {
-        let formInputs = Object.values(input).map( (e) => !!e ).reduce( (prev, curr) => (prev + curr));
+        let {type, ...inputs} = input;
+        let formInputs = Object.values(inputs).map( (e) => !!e ).reduce( (prev, curr) => (prev + curr));
         let formErrors = Object.values(error).map( (e) => !!e ).reduce( (prev, curr) => (prev + curr));
-        // console.log(`--- formInputs ---${formInputs}\n ---formErrors---${formErrors}\n --- disabled ---${disabled}`)
 
-        if (formInputs === 9 && formErrors === 0) {
-            setDisabled(false);
+        if (formInputs === 8 && formErrors === 0 && input.type.length > 0) {
+            return false;
         } else {
-            setDisabled(true);
+            return true;
         }
     };
 
@@ -108,10 +97,8 @@ export default function CreatePokemon(){
     };
 
     let handleChange = (e) => {
-        buttonEnabler();
         validateInput(e.target.name, e.target.value);
         setInput((prev) => ({...prev, [e.target.name]: e.target.value}));
-        ;
     };
 
     let handleSelect = (e) => {
@@ -138,6 +125,8 @@ export default function CreatePokemon(){
             height:'',
             weight:''
         });
+        dispatch(cleanPokemons());
+        alert("Your pokemon has been successfully created");
         history.push('/home');
     }
 
@@ -166,8 +155,8 @@ export default function CreatePokemon(){
                 </div>
                 <div>
                     <label className={styles.label}> Types</label>
-                    <select className={styles.input} name='type' onChange={handleSelect}>
-                        <option key='all' value='all' >Please select</option>
+                    <select className={styles.input} defaultValue='default' name='type' onChange={handleSelect}>
+                        <option key='all' value='default' disabled>Please select</option>
                         {
                             typeList?.map( (el,i) => {
                                 return(
@@ -176,6 +165,9 @@ export default function CreatePokemon(){
                             })
                         }
                     </select>
+                    {
+                        input.type.length ? null : <span className={styles.spanError}> &#10060; Select a type!</span>
+                    }
                     <ul>
                         {
                             input.type?.map( (el, i) => {
@@ -235,7 +227,7 @@ export default function CreatePokemon(){
                 }
                 </div>
                 <br/>
-                <input disabled={disabled} type={'submit'} value={'CREATE'}/>
+                <input disabled={buttonEnabler()} type={'submit'} value={'CREATE'}/>
                 <NavLink to={'/home'} >
                     <button className={styles.button}>Home</button>
                 </NavLink>

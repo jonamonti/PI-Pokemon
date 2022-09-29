@@ -4,8 +4,6 @@ import { getPokemonByName } from '../actions';
 import { useState } from "react";
 import styles from '../cssModule/SearchBar.module.css';
 
-let arr1 = [];
-
 export default function SearchBar() {
     // hooks
     const dispatch = useDispatch();
@@ -30,7 +28,6 @@ export default function SearchBar() {
 
     const existsName = (name) => {
         let exactMatch = allPokemons.filter((el) => el.name === name.toLowerCase());
-        // console.log(name, arr1);
         if (!exactMatch.length) {
             return true
         } else {

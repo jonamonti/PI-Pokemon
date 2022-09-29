@@ -90,12 +90,20 @@ export default function rootReducer(state= initialState, action) {
                 ...state,
                 pokemonList: sortedByAttack
             }
+        case 'CLEAN_POKEMONS':
+            return{
+                ...state
+            }
         case 'CLEAN_POKEMON_DETAIL':
             return{
                 ...state,
                 pokemonDetail: []
             }
         case 'CREATE_POKEMON':
+            return{
+                ...state
+            }
+        case 'DELETE_POKEMON':
             return{
                 ...state
             }

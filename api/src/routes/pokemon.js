@@ -61,7 +61,7 @@ router.post('/', async (req, res) => {
 
     try {
         const newPokemon = await Pokemon.create({
-            name,
+            name: name.toLowerCase(),
             hp,
             attack,
             defense,
@@ -75,6 +75,21 @@ router.post('/', async (req, res) => {
     } catch (error) {
         res.status(404).json(error);
     }
+})
+
+// DELETE /pokemons/delete
+router.delete('/delete', async(req, res) => {
+    let { id } = req.body;
+    // console.log('back-', req.body);
+
+    try {
+        const queryCondition = {where: {id: id}};
+        await Pokemon.destroy(queryCondition);
+        res.status(200).json('Deleted');
+    } catch (error) {
+        res.status(404).json(error);
+    }
+    
 })
 
 module.exports = router; 
